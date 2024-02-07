@@ -4,13 +4,13 @@ const jwt = require("jsonwebtoken");
 
 const createUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
-    const saltrunde = 10;
-    const hashpassword = await bcrypt.hash(password, saltrunde) // TODO update naming
+    const { username, email, password, firstName, lastName, address, phoneNumber,canList } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10)
     const newUser = new User({
       username,
       email,
-      password: hashpassword,
+      password: hashedPassword,
+      firstName, lastName, address, phoneNumber,canList,
     });
 
     const savedUser = await newUser.save();
@@ -19,7 +19,7 @@ const createUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(200).json({ message: "Login successful", savedUser, token });
+    res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -28,7 +28,7 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body.userData;
+    const { email, password } = req.body;
     const user = await User.findOne({ email: email });
     if (!user) {
       return res.status(401).json({ error: "Invalid credentials" });
@@ -38,7 +38,7 @@ const loginUser = async (req, res) => {
       const token = jwt.sign({ userId: user._id }, "your-secret-key", { // TODO - replace with process.env.JWT_SECRET or something similar
         expiresIn: "1h",
       });
-      res.status(200).json({ message: "Login successful", user, token });
+      res.status(200).json({ message: "Login successful", token });
     }
     
     
