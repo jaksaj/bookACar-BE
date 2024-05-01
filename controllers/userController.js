@@ -28,10 +28,10 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body.userData;
     const user = await User.findOne({ email: email });
     if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
+      return res.status(401).json({ error: "Invalid email" });
     }
 
     if (await bcrypt.compare(password, user.password)){
@@ -40,8 +40,7 @@ const loginUser = async (req, res) => {
       });
       res.status(200).json({ message: "Login successful", token });
     }
-    
-    
+      res.status(401).json({ error: "Invalid password" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
