@@ -3,11 +3,11 @@ const router = express.Router();
 const ReservationController = require("../controllers/reservationController");
 
 router.get("/reservations", ReservationController.getAllReservations);
-router.get("/reservations/:id", ReservationController.getReservationById);
 router.get(
-  "/reservations/user/:userId",
+  "/reservations/user",
   ReservationController.getAllReservationsByUser
 );
+router.get("/reservations/:id", ReservationController.getReservationById);
 router.get(
   "/reservations/car/:carId",
   ReservationController.getAllReservationsByCar

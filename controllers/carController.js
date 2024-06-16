@@ -8,7 +8,16 @@ const carController = {
     // Get all cars
     getAllCars: async (req, res) => {
         try {
-            const cars = await Car.find();
+            const cars = await Car.find({ owner: { $ne: req.userId } });
+            res.json(cars);
+        } catch (error) {
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    },
+
+    getCarsByOwner: async (req, res) => {
+        try {
+            const cars = await Car.find({ owner: req.userId });
             res.json(cars);
         } catch (error) {
             res.status(500).json({ error: 'Internal server error' });

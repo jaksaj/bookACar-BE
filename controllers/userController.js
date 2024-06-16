@@ -19,10 +19,10 @@ const createUser = async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.status(200).json({ message: "Login successful", token });
+    return res.status(200).json({ message: "Login successful", token });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
@@ -38,12 +38,12 @@ const loginUser = async (req, res) => {
       const token = jwt.sign({ userId: user._id }, "your-secret-key", { // TODO - replace with process.env.JWT_SECRET or something similar
         expiresIn: "1h",
       });
-      res.status(200).json({ message: "Login successful", token });
+      return res.status(200).json({ message: "Login successful", token });
     }
-      res.status(401).json({ error: "Invalid password" });
+      return res.status(401).json({ error: "Invalid password" });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
