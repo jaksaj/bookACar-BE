@@ -20,6 +20,11 @@ const reviewSchema = new Schema({
     ref: "User",
     required: true,
   },
+  reservation: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Reservation",
+    required: true,
+  },
 });
 
 const Review = mongoose.model("Review", reviewSchema);

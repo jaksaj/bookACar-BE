@@ -11,8 +11,9 @@ const getAllReviews = async (req, res) => {
 
 const createReview = async (req, res) => {
   try {
-    const { title, content, rating } = req.body;
-    const newReview = new Review({ title, content, rating });
+    const user = req.userId;
+    const { text, rating, car, reservation } = req.body;
+    const newReview = new Review({ text, rating, car, user, reservation });
     const savedReview = await newReview.save();
     res.json(savedReview);
   } catch (error) {
@@ -26,6 +27,22 @@ const getAllReviewsByCar = async (req, res) => {
     res.json(reviews);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+const getReviewByReservation = async (req, res) => {
+  console.log(req.params.reservationId);
+  try {
+    const review = await Review.findOne({
+      reservation: req.params.reservationId,
+    });
+    console.log(review);
+    if (!review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+    res.json(review);
+  } catch (error) {
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
@@ -73,6 +90,7 @@ const deleteReviewById = async (req, res) => {
 module.exports = {
   getAllReviews,
   getAllReviewsByCar,
+  getReviewByReservation,
   createReview,
   getReviewById,
   updateReviewById,
