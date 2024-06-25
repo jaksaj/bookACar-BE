@@ -31,12 +31,10 @@ const getAllReviewsByCar = async (req, res) => {
 };
 
 const getReviewByReservation = async (req, res) => {
-  console.log(req.params.reservationId);
   try {
     const review = await Review.findOne({
       reservation: req.params.reservationId,
     });
-    console.log(review);
     if (!review) {
       return res.status(404).json({ error: "Review not found" });
     }

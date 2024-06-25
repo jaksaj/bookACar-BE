@@ -20,7 +20,9 @@ const getAllReservationsByUser = async (req, res) => {
 
 const getAllReservationsByCar = async (req, res) => {
   try {
-    const reservations = await Reservation.find({ car: req.params.carId }).sort({ fromDate: 1 });
+    const reservations = await Reservation.find({ car: req.params.carId }).sort(
+      { fromDate: 1 }
+    );
     res.json(reservations);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -47,7 +49,9 @@ const createReservation = async (req, res) => {
   });
 
   if (overlappingReservations.length > 0) {
-    return res.status(400).json({ message: "Requested dates are already booked." });
+    return res
+      .status(400)
+      .json({ message: "Requested dates are already booked." });
   }
 
   try {
@@ -81,7 +85,6 @@ const updateReservation = async (req, res) => {
       reservation.toDate = req.body.toDate;
       reservation.isPaid = req.body.isPaid;
       reservation.totalCost = req.body.totalCost;
-      //TODO see which fields are required and which are not
       const updatedReservation = await reservation.save();
       res.json(updatedReservation);
     } else {

@@ -7,7 +7,7 @@ const authenticateToken = (req, res, next) => {
     const token = authorizationHeader.slice(7);
 
     try {
-      const decoded = jwt.verify(token, "your-secret-key"); //TODO - replace with process.env.JWT_SECRET or something similar
+      const decoded = jwt.verify(token, "your-secret-key"); // should be stored in .env file
       req.userId = decoded.userId;
       next();
     } catch (error) {
